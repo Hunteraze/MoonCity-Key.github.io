@@ -75,29 +75,33 @@
 <script>
   const jsonUrl = "https://trttesfs.github.io/MoonCity-Key.github.io/Key.json";
 
-  async function fetchKey() {
-    try {
-      const response = await fetch(jsonUrl);
-      if (!response.ok) throw new Error("Ошибка при загрузке JSON");
-      const data = await response.json();
-      const now = new Date();
+async function fetchKey() {
+  try {
+    const response = await fetch(jsonUrl);
+    if (!response.ok) throw new Error("Ошибка при загрузке JSON");
+    const data = await response.json();
 
-      const activeKeyObj = data.keys.find(k => {
-        const start = new Date(k.start);
-        const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
-        return now >= start && now < end;
-      });
+    const now = new Date();
+    // Приводим текущее время к UTC, чтобы сравнивать с UTC временем из JSON
+    const nowUtc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
 
-      if (activeKeyObj) {
-        document.getElementById("key-text").textContent = activeKeyObj.key;
-      } else {
-        document.getElementById("key-text").textContent = "Ключ не найден по текущему времени.";
-      }
-    } catch (error) {
-      document.getElementById("key-text").textContent = "Ошибка при загрузке ключа.";
-      console.error(error);
+    const activeKeyObj = data.keys.find(k => {
+      const start = new Date(k.start);
+      const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
+      return nowUtc >= start && nowUtc < end;
+    });
+
+    if (activeKeyObj) {
+      document.getElementById("key-text").textContent = activeKeyObj.key;
+    } else {
+      document.getElementById("key-text").textContent = "Ключ не найден по текущему времени.";
     }
+  } catch (error) {
+    document.getElementById("key-text").textContent = "Ошибка при загрузке ключа.";
+    console.error(error);
   }
+}
+
 
   function copyKey() {
     const keyText = document.getElementById("key-text").textContent;
