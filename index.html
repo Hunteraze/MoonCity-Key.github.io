@@ -1,102 +1,136 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ключ</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: white;
-      animation: bgColorShift 20s infinite alternate;
-      transition: background-color 1s;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ключ</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    animation: bgColorShift 60s linear infinite;
+    transition: background-color 1s;
+  }
 
-    @keyframes bgColorShift {
-      0%   { background-color: white; }
-      50%  { background-color: #ff4d4d; } /* мягкий красный */
-      100% { background-color: white; }
-    }
+  @keyframes bgColorShift {
+    0%   { background-color: rgb(255,255,255); }       /* белый */
+    16%  { background-color: rgb(255,77,77); }         /* красный */
+    32%  { background-color: rgb(255,140,0); }         /* оранжевый */
+    48%  { background-color: rgb(255,215,0); }         /* желтый */
+    64%  { background-color: rgb(255,255,255); }       /* белый */
+    80%  { background-color: rgb(255,77,77); }         /* красный */
+    100% { background-color: rgb(255,140,0); }         /* оранжевый */
+  }
 
-    .container {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 30px 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-    }
+  .container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
 
-    #key-text {
-      margin-bottom: 20px;
-      font-size: 1.4rem;
-      word-break: break-word;
-      min-height: 60px;
-      color: #333;
-      user-select: all;
-    }
+  #key-text {
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    word-break: break-word;
+    min-height: 60px;
+    color: #333;
+    user-select: all;
+  }
 
-    button {
-      padding: 10px 25px;
-      font-size: 1rem;
-      border: 2px solid #ff4d4d;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #ff4d4d;
-      transition: background-color 0.3s, color 0.3s;
-      font-weight: 600;
-    }
-    button:hover {
-      background-color: #ff4d4d;
-      color: white;
-    }
-  </style>
+  button {
+    padding: 10px 25px;
+    font-size: 1rem;
+    background-color: rgb(20,20,20);
+    border: 2px solid rgba(25,25,25,0.5);
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+  button:hover {
+    background-color: rgb(40,40,40);
+    border-color: rgba(50,50,50,0.7);
+  }
+</style>
 </head>
 <body>
   <div class="container">
     <div id="key-text">Загрузка ключа...</div>
-    <button id="copy-btn" onclick="copyKey()">Скопировать</button>
+    <button id="copy-btn">Скопировать</button>
   </div>
 
-  <script>
-    const pastebinURL = 'https://pastebin.com/raw/QJZYzYmb';
-    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+<script>
+  const pastebinURL = 'https://pastebin.com/raw/QJZYzYmb';
+  const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
-    async function fetchKey() {
-      try {
-        // Используем прокси для обхода CORS
-        const response = await fetch(corsProxy + pastebinURL);
-        if (!response.ok) throw new Error('Ошибка сети');
-        const text = await response.text();
-        document.getElementById('key-text').textContent = text.trim();
-      } catch (error) {
-        document.getElementById('key-text').textContent = 'Ошибка при загрузке ключа.';
-        console.error('Ошибка загрузки ключа:', error);
-      }
+  async function fetchKey() {
+    try {
+      const response = await fetch(corsProxy + pastebinURL);
+      if (!response.ok) throw new Error('Ошибка сети');
+      const text = await response.text();
+      document.getElementById('key-text').textContent = text.trim();
+    } catch (error) {
+      document.getElementById('key-text').textContent = 'Ошибка при загрузке ключа.';
+      console.error('Ошибка загрузки ключа:', error);
     }
+  }
 
-    function copyKey() {
-      const keyText = document.getElementById('key-text').textContent;
-      if (!keyText || keyText === 'Ошибка при загрузке ключа.') {
-        alert('Нет ключа для копирования.');
-        return;
-      }
+  function copyKey() {
+    const keyText = document.getElementById('key-text').textContent;
+    if (!keyText || keyText === 'Ошибка при загрузке ключа.') {
+      alert('Нет ключа для копирования.');
+      return;
+    }
+    // Создадим временный textarea для копирования как fallback
+    if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(keyText).then(() => {
         alert('Ключ скопирован!');
       }).catch(() => {
-        alert('Ошибка копирования.');
+        fallbackCopy(keyText);
       });
+    } else {
+      fallbackCopy(keyText);
     }
+  }
 
-    fetchKey();
-  </script>
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    // Скрываем textarea
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      const successful = document.execCommand('copy');
+      if(successful){
+        alert('Ключ скопирован!');
+      } else {
+        alert('Ошибка копирования.');
+      }
+    } catch {
+      alert('Ошибка копирования.');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  document.getElementById('copy-btn').addEventListener('click', copyKey);
+
+  fetchKey();
+</script>
+</body>
+</html>
+
 </body>
 </html>
