@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ключ</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #key {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      word-break: break-word;
+    }
+
+    button {
+      background-color: #ffffff20;
+      border: 1px solid #ffffff50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffffff40;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="key">Загрузка ключа...</div>
+    <button onclick="copyKey()">Скопировать</button>
+  </div>
+
+  <script>
+    async function fetchKey() {
+      try {
+        const res = await fetch('https://pastebin.com/raw/QJZYzYmb');
+        const text = await res.text();
+        document.getElementById('key').textContent = text.trim();
+      } catch (e) {
+        document.getElementById('key').textContent = 'Ошибка при загрузке ключа.';
+      }
+    }
+
+    function copyKey() {
+      const keyText = document.getElementById('key').textContent;
+      navigator.clipboard.writeText(keyText).then(() => {
+        alert('Ключ скопирован!');
+      });
+    }
+
+    fetchKey();
+  </script>
+</body>
+</html>
