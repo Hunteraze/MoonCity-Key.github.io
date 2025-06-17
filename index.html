@@ -73,24 +73,32 @@
   </div>
 
 <script>
-  const keyURL = 'https://raw.githubusercontent.com/trttesfs/KEY.MoonCity/main/Key';
+  // URL к твоему JSON с ключом, загруженному в репозиторий рядом с index.html
+  const keyJSONUrl = 'https://trttesfs.github.io/MoonCity-Key.github.io/key.json';
 
-async function fetchKey() {
-  try {
-    const response = await fetch(keyURL);
-    if (!response.ok) throw new Error('Ошибка сети');
-    const text = await response.text();
-    document.getElementById('key-text').textContent = text.trim();
-  } catch (error) {
-    document.getElementById('key-text').textContent = 'Ошибка при загрузке ключа.';
-    console.error('Ошибка загрузки ключа:', error);
+  async function fetchKey() {
+    try {
+      const response = await fetch(keyJSONUrl);
+      if (!response.ok) throw new Error('Ошибка сети');
+
+      // Предполагаем, что JSON имеет структуру: { "key": "FRGSH-4426W-5235G-D5245-H6352", "generatedAt": "2025-06-17T10:00:00Z" }
+      const data = await response.json();
+
+      // Проверка валидности и вывод ключа
+      if (data.key && data.key.trim().length > 0) {
+        document.getElementById('key-text').textContent = data.key.trim();
+      } else {
+        document.getElementById('key-text').textContent = 'Ключ не найден.';
+      }
+    } catch (error) {
+      document.getElementById('key-text').textContent = 'Ошибка при загрузке ключа.';
+      console.error('Ошибка загрузки ключа:', error);
+    }
   }
-}
-
 
   function copyKey() {
     const keyText = document.getElementById('key-text').textContent;
-    if (!keyText || keyText === 'Ошибка при загрузке ключа.') {
+    if (!keyText || keyText === 'Ошибка при загрузке ключа.' || keyText === 'Ключ не найден.') {
       alert('Нет ключа для копирования.');
       return;
     }
