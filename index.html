@@ -5,33 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ключ на 6 часов</title>
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #000;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: white;
-      animation: bgColorShift 60s linear infinite;
+      height: 100vh;
+      background: #f0f0f0;
     }
-
-    @keyframes bgColorShift {
-      0%   { background-color: rgb(255,255,255); }
-      11%  { background-color: rgb(255,77,77); }
-      22%  { background-color: rgb(255,140,0); }
-      33%  { background-color: rgb(255,215,0); }
-      44%  { background-color: rgb(0,255,0); }
-      55%  { background-color: rgb(0,255,255); }
-      66%  { background-color: rgb(0,0,255); }
-      77%  { background-color: rgb(139,0,255); }
-      88%  { background-color: rgb(255,20,147); }
-      100% { background-color: rgb(255,255,255); }
-    }
-
     .container {
-      background: rgba(255, 255, 255, 0.8);
+      background: white;
       padding: 30px 40px;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -39,29 +22,27 @@
       max-width: 400px;
       width: 90%;
     }
-
     #key-text {
-      margin-bottom: 20px;
       font-size: 1.4rem;
-      word-break: break-word;
-      min-height: 60px;
-      color: #333;
+      margin-bottom: 20px;
       user-select: all;
+      color: #333;
+      min-height: 60px;
+      word-break: break-word;
     }
-
     button {
       padding: 10px 25px;
       font-size: 1rem;
-      background-color: rgb(20,20,20);
+      background-color: #141414;
+      color: white;
       border: 2px solid rgba(25,25,25,0.7);
       border-radius: 8px;
       cursor: pointer;
-      color: white;
       font-weight: 600;
-      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     button:hover {
-      background-color: rgb(40,40,40);
+      background-color: #282828;
       border-color: rgba(60,60,60,0.9);
     }
   </style>
@@ -72,51 +53,49 @@
     <button id="copy-btn">Скопировать</button>
   </div>
 
-<script>
-  const jsonUrl = "https://trttesfs.github.io/MoonCity-Key.github.io/Key.json";
+  <script>
+    const jsonUrl = "https://trttesfs.github.io/MoonCity-Key.github.io/Key.json";
 
-async function fetchKey() {
-  try {
-    const response = await fetch(jsonUrl);
-    if (!response.ok) throw new Error("Ошибка при загрузке JSON");
-    const data = await response.json();
+    async function fetchKey() {
+      try {
+        const res = await fetch(jsonUrl);
+        if (!res.ok) throw new Error('Ошибка загрузки JSON');
+        const data = await res.json();
+        const now = new Date();
 
-    const now = new Date();
-    // Приводим текущее время к UTC, чтобы сравнивать с UTC временем из JSON
-    const nowUtc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+        // Ищем активный ключ: now >= start && now < start + 6 часов
+        const activeKeyObj = data.keys.find(k => {
+          const start = new Date(k.start);
+          const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
+          return now >= start && now < end;
+        });
 
-    const activeKeyObj = data.keys.find(k => {
-      const start = new Date(k.start);
-      const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
-      return nowUtc >= start && nowUtc < end;
-    });
-
-    if (activeKeyObj) {
-      document.getElementById("key-text").textContent = activeKeyObj.key;
-    } else {
-      document.getElementById("key-text").textContent = "Ключ не найден по текущему времени.";
+        const keyTextElem = document.getElementById('key-text');
+        if (activeKeyObj) {
+          keyTextElem.textContent = activeKeyObj.key;
+        } else {
+          keyTextElem.textContent = "Ключ не найден по текущему времени.";
+        }
+      } catch (error) {
+        document.getElementById('key-text').textContent = "Ошибка при загрузке ключа.";
+        console.error(error);
+      }
     }
-  } catch (error) {
-    document.getElementById("key-text").textContent = "Ошибка при загрузке ключа.";
-    console.error(error);
-  }
-}
 
-
-  function copyKey() {
-    const keyText = document.getElementById("key-text").textContent;
-    if (!keyText || keyText.includes("Ошибка") || keyText.includes("не найден")) {
-      alert("Нет ключа для копирования.");
-      return;
+    function copyKey() {
+      const keyText = document.getElementById("key-text").textContent;
+      if (!keyText || keyText.includes("Ошибка") || keyText.includes("не найден")) {
+        alert("Нет ключа для копирования.");
+        return;
+      }
+      navigator.clipboard.writeText(keyText).then(() => {
+        alert("Ключ скопирован!");
+      });
     }
-    navigator.clipboard.writeText(keyText).then(() => {
-      alert("Ключ скопирован!");
-    });
-  }
 
-  document.getElementById("copy-btn").addEventListener("click", copyKey);
+    document.getElementById("copy-btn").addEventListener("click", copyKey);
 
-  fetchKey();
-</script>
+    fetchKey();
+  </script>
 </body>
 </html>
