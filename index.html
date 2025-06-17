@@ -2,72 +2,97 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ключ</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      height: 100vh;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #000;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
+      background: white;
+      animation: bgColorShift 20s infinite alternate;
+      transition: background-color 1s;
+    }
+
+    @keyframes bgColorShift {
+      0%   { background-color: white; }
+      50%  { background-color: #ff4d4d; } /* мягкий красный */
+      100% { background-color: white; }
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.8);
       padding: 30px 40px;
       border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 90%;
     }
 
-    #key {
-      font-size: 1.5rem;
+    #key-text {
       margin-bottom: 20px;
+      font-size: 1.4rem;
       word-break: break-word;
+      min-height: 60px;
+      color: #333;
+      user-select: all;
     }
 
     button {
-      background-color: #ffffff20;
-      border: 1px solid #ffffff50;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
+      padding: 10px 25px;
       font-size: 1rem;
-      transition: background 0.3s;
+      border: 2px solid #ff4d4d;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #ff4d4d;
+      transition: background-color 0.3s, color 0.3s;
+      font-weight: 600;
     }
-
     button:hover {
-      background-color: #ffffff40;
+      background-color: #ff4d4d;
+      color: white;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div id="key">Загрузка ключа...</div>
-    <button onclick="copyKey()">Скопировать</button>
+    <div id="key-text">Загрузка ключа...</div>
+    <button id="copy-btn" onclick="copyKey()">Скопировать</button>
   </div>
 
   <script>
+    const pastebinURL = 'https://pastebin.com/raw/QJZYzYmb';
+    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+
     async function fetchKey() {
       try {
-        const res = await fetch('https://pastebin.com/raw/QJZYzYmb');
-        const text = await res.text();
-        document.getElementById('key').textContent = text.trim();
-      } catch (e) {
-        document.getElementById('key').textContent = 'Ошибка при загрузке ключа.';
+        // Используем прокси для обхода CORS
+        const response = await fetch(corsProxy + pastebinURL);
+        if (!response.ok) throw new Error('Ошибка сети');
+        const text = await response.text();
+        document.getElementById('key-text').textContent = text.trim();
+      } catch (error) {
+        document.getElementById('key-text').textContent = 'Ошибка при загрузке ключа.';
+        console.error('Ошибка загрузки ключа:', error);
       }
     }
 
     function copyKey() {
-      const keyText = document.getElementById('key').textContent;
+      const keyText = document.getElementById('key-text').textContent;
+      if (!keyText || keyText === 'Ошибка при загрузке ключа.') {
+        alert('Нет ключа для копирования.');
+        return;
+      }
       navigator.clipboard.writeText(keyText).then(() => {
         alert('Ключ скопирован!');
+      }).catch(() => {
+        alert('Ошибка копирования.');
       });
     }
 
