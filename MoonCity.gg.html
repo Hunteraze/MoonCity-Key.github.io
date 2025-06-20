@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wave Development</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #43e7e0, #f5a623);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      font-family: sans-serif;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .header {
+      margin-top: 50px;
+      font-size: 48px;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 30px;
+      margin: 20px 0;
+    }
+
+    button {
+      background-color: rgb(24, 24, 24);
+      color: white;
+      padding: 15px 60px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: rgb(40, 40, 40);
+    }
+
+    .credits {
+      font-size: 14px;
+      opacity: 0.6;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .boards {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .board {
+      width: 220px;
+      height: 320px;
+      background-color: rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+      padding: 20px;
+    }
+
+    .board img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin-bottom: 50px;
+      padding: 0 20px;
+    }
+
+    .feature {
+      width: 100%;
+      height: 250px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature img {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .feature-content {
+      flex: 1;
+    }
+
+    .feature h2 {
+      font-size: 24px;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .feature p {
+      font-size: 16px;
+      color: white;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Let the MoonCity begin, Version: 1.0</div>
+
+  <div class="buttons">
+    <button onclick="downloadFile()">Download</button>
+    <button onclick="window.open('https://trttesfs.github.io/MoonCity-Key.github.io/Key-System.html', '_blank')">Get Key</button>
+  </div>
+
+  <div class="credits">Brought to you by the MoonCity Development Team</div>
+
+  <div class="boards">
+    <div class="board" id="windows">
+      <img src="https://i.postimg.cc/5NSbN8dp/49767.png" alt="Windows">
+      Windows Version: 1.0
+    </div>
+    <div class="board" id="android">
+      <img src="https://i.postimg.cc/JzK076Xn/121145.png" alt="Android">
+      Android soon...
+    </div>
+  </div>
+
+  <div class="features">
+    <!-- Top 3 -->
+    <div class="feature">
+      <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Мы гарантируем, что ваше время использования нашего эксплойта безопасно и незамечено.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Мы гарантируем, что ваше время использования нашего эксплойта безопасно и незамечено.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Мы гарантируем, что ваше время использования нашего эксплойта безопасно и незамечено.</p>
+      </div>
+    </div>
+
+    <!-- Bottom 3 (пустышки — ты сам заменишь) -->
+    <div class="feature">
+      <img src="key.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Замените этот текст и иконку по желанию.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <img src="key.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Замените этот текст и иконку по желанию.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <img src="key.png" alt="Key">
+      <div class="feature-content">
+        <h2>Secure</h2>
+        <p>Замените этот текст и иконку по желанию.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const windowsBoard = document.getElementById('windows');
+    const androidBoard = document.getElementById('android');
+
+    document.addEventListener('mousemove', (e) => {
+      const windowWidth = window.innerWidth;
+      const mouseX = e.clientX;
+      const rotateAngle = (mouseX / windowWidth - 0.5) * 60;
+
+      windowsBoard.style.transform = `rotateY(${rotateAngle}deg)`;
+      androidBoard.style.transform = `rotateY(${rotateAngle}deg)`;
+    });
+
+    function downloadFile() {
+      const link = document.createElement("a");
+      link.href = "https://raw.githubusercontent.com/trttesfs/MoonCity-Key.github.io/main/index.html";
+      link.download = "MoonCity.html";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
