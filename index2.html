@@ -80,6 +80,10 @@
     .copy-btn:active {
       background-color: #555;
     }
+
+    .copied {
+      background-color: #000 !important;
+    }
   </style>
 </head>
 <body>
@@ -87,59 +91,128 @@
     <h1>MoonCity Key</h1>
     <div id="key-text">Loading...</div>
     <div id="time-text"></div>
-    <button class="copy-btn" onclick="copyKey()">Copy</button>
+    <button class="copy-btn" id="copy-btn" onclick="copyKey()">Copy</button>
   </div>
 
   <script>
     const jsonUrl = "https://trttesfs.github.io/MoonCity-Key.github.io/Key2.json";
+    let previousKey = null; // Храним предыдущий ключ для сравнения
 
     async function fetchKey() {
       try {
-        const res = await fetch(jsonUrl);
+        const res = await fetch(jsonUrl + "?v=" + new Date().getTime());
+        if (!res.ok) throw new Error('Failed to load JSON');
         const data = await res.json();
 
-        const nowUtc = new Date(Date.now());
+        const nowUtc = new Date();
+        console.log('Current date:', nowUtc.toDateString());
 
+        // Найти ключ для текущей даты, игнорируя время
         const currentKey = data.keys.find(k => {
-          const start = new Date(k.start);
-          const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
-          return nowUtc >= start && nowUtc < end;
+          const startDate = new Date(k.start);
+          return startDate.toDateString() === nowUtc.toDateString();
         });
 
+        console.log('Found key:', currentKey);
+
         if (currentKey) {
-          document.getElementById("key-text").textContent = currentKey.key;
-          const end = new Date(new Date(currentKey.start).getTime() + 6 * 60 * 60 * 1000);
+          // Форматировать ключ, если нет дефисов
+          const displayKey = currentKey.key.includes('-')
+            ? currentKey.key
+            : currentKey.key.match(/.{1,5}/g).join('-');
+          
+          // Проверить, изменился ли ключ
+          if (previousKey && previousKey !== displayKey) {
+            console.log('Key changed, redirecting to MoonCity.gg.html');
+            window.location.href = 'https://trttesfs.github.io/MoonCity-Key.github.io/MoonCity.gg.html';
+            return; // Прекратить выполнение, чтобы избежать обновления DOM
+          }
+
+          // Обновить ключ на странице
+          document.getElementById("key-text").textContent = displayKey;
           document.getElementById("time-text").textContent =
-            "The subscription key works for 24 hours";
+            "The subscription key is valid until midnight UTC";
+          
+          // Сохранить текущий ключ как предыдущий
+          previousKey = displayKey;
         } else {
           document.getElementById("key-text").textContent = "Key not found";
           document.getElementById("time-text").textContent = "";
+          previousKey = null; // Сбросить предыдущий ключ
         }
       } catch (e) {
         document.getElementById("key-text").textContent = "Error loading key";
+        document.getElementById("time-text").textContent = "";
         console.error("Error loading key:", e);
+        previousKey = null; // Сбросить предыдущий ключ при ошибке
       }
     }
 
     function copyKey() {
       const keyText = document.getElementById("key-text").textContent;
-      if (keyText && keyText !== "Loading..." && keyText !== "Key not found" && keyText !== "Error loading key") {
-        navigator.clipboard.writeText(keyText)
-          .then(() => {
-            const btn = document.querySelector('.copy-btn');
-            btn.textContent = 'Copied!';
-            setTimeout(() => {
-              btn.textContent = 'Copy';
-            }, 2000);
-          })
-          .catch(err => {
-            console.error('Failed to copy: ', err);
-          });
+      const copyBtn = document.getElementById("copy-btn");
+      
+      if (!keyText || keyText === "Loading..." || keyText === "Key not found" || keyText === "Error loading key") {
+        console.warn('No valid key to copy:', keyText);
+        copyBtn.textContent = "No key!";
+        copyBtn.classList.add("copied");
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove("copied");
+        }, 2000);
+        return;
+      }
+
+      // Создаем временный textarea для копирования
+      const textarea = document.createElement("textarea");
+      textarea.value = keyText;
+      textarea.style.position = "fixed";  // Чтобы не было прокрутки страницы
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          console.log('Key copied successfully');
+          copyBtn.textContent = 'Copied!';
+          copyBtn.classList.add("copied");
+          setTimeout(() => {
+            copyBtn.textContent = 'Copy';
+            copyBtn.classList.remove("copied");
+          }, 2000);
+        } else {
+          throw new Error('Copy command failed');
+        }
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+        // Попробуем использовать Clipboard API если execCommand не сработал
+        navigator.clipboard.writeText(keyText).then(() => {
+          console.log('Key copied via Clipboard API');
+          copyBtn.textContent = 'Copied!';
+          copyBtn.classList.add("copied");
+          setTimeout(() => {
+            copyBtn.textContent = 'Copy';
+            copyBtn.classList.remove("copied");
+          }, 2000);
+        }).catch(clipboardErr => {
+          console.error('Clipboard API error: ', clipboardErr);
+          copyBtn.textContent = "Error!";
+          setTimeout(() => {
+            copyBtn.textContent = 'Copy';
+          }, 2000);
+          // Последний вариант - показать ключ для ручного копирования
+          prompt("Please copy this key manually:", keyText);
+        });
+      } finally {
+        document.body.removeChild(textarea);
       }
     }
 
-    fetchKey();
-    setInterval(fetchKey, 5 * 60 * 1000); // update every 5 minutes
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchKey();
+      setInterval(fetchKey, 5 * 60 * 1000); // update every 5 minutes
+    });
   </script>
 </body>
 </html>
