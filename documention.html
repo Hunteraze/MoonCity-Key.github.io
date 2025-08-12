@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Документация</title>
+  <style>
+    body {
+      background-color: rgb(20, 20, 20);
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .doc-container {
+      background-color: rgb(25, 25, 25);
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 0 15px rgba(255, 192, 128, 0.2);
+    }
+
+    h1, h2, h3 {
+      color: rgb(255, 192, 128);
+      margin-top: 20px;
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    code {
+      background-color: rgb(20, 20, 20);
+      padding: 3px 6px;
+      border-radius: 6px;
+      color: rgb(255, 192, 128);
+      font-family: monospace;
+    }
+
+    ul {
+      margin: 10px 0 20px 20px;
+    }
+
+    a {
+      color: rgb(255, 192, 128);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      background-color: rgba(255, 192, 128, 0.1);
+      border-left: 4px solid rgb(255, 192, 128);
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-container">
+    <h1>Документация по проекту</h1>
+    <p>Добро пожаловать в документацию. Здесь описаны основные возможности и правила использования проекта.</p>
+
+    <h2>1. Установка</h2>
+    <p>Скачайте установочный файл с официального сайта и запустите его. Пример команды для установки:</p>
+    <code>install_project.exe /silent</code>
+
+    <h2>2. Основные команды</h2>
+    <ul>
+      <li><code>/help</code> — показать список команд</li>
+      <li><code>/status</code> — проверить статус сервиса</li>
+      <li><code>/update</code> — обновить до последней версии</li>
+    </ul>
+
+    <h2>3. Важные заметки</h2>
+    <div class="note">
+      Перед использованием убедитесь, что у вас есть стабильное интернет-соединение и актуальная версия программы.
+    </div>
+
+    <h2>4. Поддержка</h2>
+    <p>Если у вас возникли проблемы, обратитесь в <a href="#">службу поддержки</a> или напишите на <code>support@example.com</code>.</p>
+  </div>
+</body>
+</html>
