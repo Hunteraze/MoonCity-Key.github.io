@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GetMoonCity.gg</title>
   <style>
+    /* Кастомный курсор для всех элементов */
+    * {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="rgba(255,192,128,0.8)" stroke-width="2"/></svg>') 12 12, auto !important;
+    }
+    
     body {
       margin: 0;
       padding: 0;
@@ -13,10 +18,12 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      background: linear-gradient(45deg, #ff6ec4, #7873f5, #43e7e0, #f5a623);
+      background: linear-gradient(45deg, rgb(20, 20, 20), rgb(40, 40, 40), rgb(20, 20, 20), rgb(30, 30, 30));
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      color: white;
+      transition: all 0.4s ease;
     }
 
     @keyframes gradient {
@@ -25,33 +32,90 @@
       100% { background-position: 0% 50%; }
     }
 
-    .header {
-      margin-top: 50px;
-      font-size: 48px;
+    /* Навигационная панель */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .nav-btn {
+      background-color: rgba(25, 25, 25, 0.9);
       color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 10px rgba(255, 192, 128, 0.3);
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(255, 192, 128, 0.8);
+      color: black;
+      transform: translateY(-3px);
+    }
+
+    .header {
+      margin-top: 100px;
+      font-size: 48px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #43e7e0, #f5a623);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 15s ease infinite;
+      transition: all 0.4s ease;
     }
 
     .buttons {
       display: flex;
       gap: 30px;
-      margin: 20px 0;
+      margin: 30px 0;
+      transition: all 0.4s ease;
     }
 
-    button {
-      background-color: rgb(24, 24, 24);
+    /* Обновлённая анимация для кнопок */
+    .main-btn {
+      background-color: rgba(25, 25, 25, 0.9);
       color: white;
       padding: 15px 60px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       font-size: 20px;
-      transition: transform 0.3s ease, background-color 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 0 15px rgba(255, 192, 128, 0.2);
+      position: relative;
+      overflow: hidden;
     }
 
-    button:hover {
+    .main-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .main-btn:hover {
       transform: scale(1.05);
-      background-color: rgb(40, 40, 40);
+      background-color: rgba(255, 192, 128, 0.8);
+      color: black;
+      box-shadow: 0 0 25px rgba(255, 192, 128, 0.4);
+    }
+
+    .main-btn:hover::before {
+      transform: translateX(100%);
     }
 
     .credits {
@@ -59,18 +123,30 @@
       opacity: 0.6;
       color: white;
       margin-bottom: 40px;
+      transition: all 0.4s ease;
     }
 
     .boards {
       display: flex;
-      gap: 30px;
-      margin-bottom: 50px;
+      gap: 80px;
+      margin-bottom: 60px;
+      transition: all 0.4s ease;
     }
 
+    /* Раздвигаем борды */
+    #windows {
+      margin-right: 30px;
+    }
+    
+    #android {
+      margin-left: 30px;
+    }
+
+    /* Новая анимация для бордов */
     .board {
-      width: 220px;
-      height: 320px;
-      background-color: rgba(255, 255, 255, 0.3);
+      width: 240px;
+      height: 340px;
+      background-color: rgba(25, 25, 25, 0.85);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -78,46 +154,85 @@
       color: white;
       font-size: 24px;
       border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-      padding: 20px;
+      box-shadow: 0 0 20px rgba(255, 192, 128, 0.25);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 25px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .board::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255, 192, 128, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .board:hover {
+      transform: scale(1.05) translateY(-10px);
+      box-shadow: 0 0 30px rgba(255, 192, 128, 0.4);
+    }
+
+    .board:hover::before {
+      opacity: 1;
     }
 
     .board img {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
+      width: 90px;
+      height: 90px;
+      margin-bottom: 25px;
+      transition: all 0.6s ease;
+      filter: drop-shadow(0 0 8px rgba(255, 192, 128, 0.5));
     }
 
+    .board:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Раздвигаем фичи (нижние борды) */
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      max-width: 1200px;
-      margin-bottom: 50px;
-      padding: 0 20px;
+      gap: 58px; /* Увеличили расстояние между фичами */
+      max-width: 1300px;
+      margin-bottom: 70px;
+      padding: 0 30px;
+      transition: all 0.4s ease;
     }
 
     .feature {
       width: 100%;
-      height: 250px;
-      background-color: rgba(255, 255, 255, 0.3);
+      height: 260px;
+      background-color: rgba(25, 25, 25, 0.85);
       border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(255, 192, 128, 0.25);
       display: flex;
       align-items: center;
-      transition: transform 0.3s ease;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .feature:hover {
-      transform: translateY(-10px);
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 0 30px rgba(255, 192, 128, 0.4);
     }
 
     .feature img {
-      width: 80px;
-      height: 80px;
-      margin-right: 20px;
+      width: 85px;
+      height: 85px;
+      margin-right: 25px;
+      transition: all 0.6s ease;
+      filter: drop-shadow(0 0 8px rgba(255, 192, 128, 0.5));
+    }
+
+    .feature:hover img {
+      transform: scale(1.1);
     }
 
     .feature-content {
@@ -125,24 +240,108 @@
     }
 
     .feature h2 {
-      font-size: 24px;
-      color: white;
-      margin-bottom: 10px;
+      font-size: 26px;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #43e7e0, #f5a623);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 15s ease infinite;
     }
 
     .feature p {
-      font-size: 16px;
+      font-size: 17px;
       color: white;
-      opacity: 0.8;
+      opacity: 0.85;
+      line-height: 1.5;
+    }
+
+    /* Анимации плавного появления */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .navbar, .header, .buttons, .credits, .boards, .features {
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
+    
+    .navbar { animation-delay: 0.1s; }
+    .header { animation-delay: 0.2s; }
+    .buttons { animation-delay: 0.3s; }
+    .credits { animation-delay: 0.4s; }
+    .boards { animation-delay: 0.5s; }
+    .features { animation-delay: 0.6s; }
+
+    /* Медиа-запросы */
+    @media (max-width: 1100px) {
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+      
+      .navbar {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .boards {
+        gap: 60px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .features {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .boards {
+        flex-direction: column;
+        gap: 40px;
+      }
+      
+      .header {
+        font-size: 36px;
+        text-align: center;
+        padding: 0 20px;
+        margin-top: 80px;
+      }
+      
+      .buttons {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      #windows, #android {
+        margin: 0;
+      }
+      
+      .navbar {
+        position: static;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Навигационная панель -->
+  <div class="navbar">
+    <button class="nav-btn" onclick="window.location.reload()">Home</button>
+    <button class="nav-btn" onclick="window.open('https://discord.gg/GagwFFpwva', '_blank')">Discord</button>
+    <button class="nav-btn" onclick="window.open('documentation.html', '_blank')">Documentation</button>
+    <button class="nav-btn" onclick="window.open('https://rbxscript.com', '_blank')">RBXScript</button>
+  </div>
+
   <div class="header">Let the MoonCity begin, Version: 1.0.2</div>
 
   <div class="buttons">
-    <button onclick="downloadFile()">Download</button>
-    <button onclick="window.open('https://trttesfs.github.io/MoonCity-Key.github.io/Key-System.html', '_blank')">Get Key</button>
+    <button class="main-btn" onclick="downloadFile()">Download</button>
+    <button class="main-btn" onclick="window.open('https://trttesfs.github.io/MoonCity-Key.github.io/Key-System.html', '_blank')">Get Key</button>
   </div>
 
   <div class="credits">Brought to you by the MoonCity Development Team</div>
@@ -159,7 +358,6 @@
   </div>
 
   <div class="features">
-    <!-- Top 3 -->
     <div class="feature">
       <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
       <div class="feature-content">
@@ -181,8 +379,6 @@
         <p>Интегрированный центр скриптов прямо в пользовательском интерфейсе, так что вам больше не придётся искать скрипты в интернете!</p>
       </div>
     </div>
-
-    
     <div class="feature">
       <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
       <div class="feature-content">
@@ -194,31 +390,52 @@
       <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
       <div class="feature-content">
         <h2>Free</h2>
-        <p> что самое приятное? MoonCity бесплатна! Нажав на кнопку «Get Key» в верхней части страницы, вы можете получить ключ, который можно использовать в MoonCity.</p>
+        <p>Что самое приятное? MoonCity бесплатна! Нажав на кнопку «Get Key» в верхней части страницы, вы можете получить ключ, который можно использовать в MoonCity.</p>
       </div>
     </div>
     <div class="feature">
       <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
       <div class="feature-content">
         <h2>UNDETECT</h2>
-        <p>експлойт насыщен Undetected, и вы можете играть долгое время, не боясь получить бан.</p>
+        <p>Эксплойт насыщен Undetected, и вы можете играть долгое время, не боясь получить бан.</p>
       </div>
     </div>
   </div>
 
   <script>
-    const windowsBoard = document.getElementById('windows');
-    const androidBoard = document.getElementById('android');
+    // Плавное движение элементов при движении мыши
+    const header = document.querySelector('.header');
+    const boardsContainer = document.querySelector('.boards');
+    const featuresContainer = document.querySelector('.features');
+    const credits = document.querySelector('.credits');
 
-    document.addEventListener('mousemove', (e) => {
+    // Функция для плавного движения элементов
+    function smoothMove(e) {
       const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
       const mouseX = e.clientX;
-      const rotateAngle = (mouseX / windowWidth - 0.5) * 60;
+      const mouseY = e.clientY;
+      
+      // Вычисляем смещение (от -0.5 до 0.5)
+      const offsetX = (mouseX / windowWidth - 0.5) * 15;
+      const offsetY = (mouseY / windowHeight - 0.5) * 10;
+      
+      // Применяем к элементам
+      header.style.transform = `translate(${offsetX * 0.3}px, ${offsetY * 0.3}px)`;
+      boardsContainer.style.transform = `translate(${offsetX * 0.5}px, ${offsetY * 0.5}px)`;
+      featuresContainer.style.transform = `translate(${offsetX * 0.2}px, ${offsetY * 0.2}px)`;
+      credits.style.transform = `translate(${offsetX * 0.1}px, ${offsetY * 0.1}px)`;
+    }
 
-      windowsBoard.style.transform = `rotateY(${rotateAngle}deg)`;
-      androidBoard.style.transform = `rotateY(${rotateAngle}deg)`;
+    // Добавляем плавную анимацию при движении мыши
+    let mouseMoveTimer;
+    document.addEventListener('mousemove', (e) => {
+      // Ограничиваем частоту обновления для плавности
+      clearTimeout(mouseMoveTimer);
+      mouseMoveTimer = setTimeout(() => smoothMove(e), 20);
     });
 
+    // Функция для скачивания файла
     function downloadFile() {
       const link = document.createElement("a");
       link.href = "https://github.com/trttesfs/MoonCity_Files/raw/main/MoonCityInstaller.exe";
