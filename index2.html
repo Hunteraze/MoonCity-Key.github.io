@@ -16,16 +16,16 @@
     }
 
     @keyframes bgColorShift {
-      0%   { background-color: rgb(255,255,255); }       /* белый */
-      11%  { background-color: rgb(255,77,77); }         /* красный */
-      22%  { background-color: rgb(255,140,0); }         /* оранжевый */
-      33%  { background-color: rgb(255,215,0); }         /* желтый */
-      44%  { background-color: rgb(0,255,0); }           /* зеленый */
-      55%  { background-color: rgb(0,255,255); }         /* голубой */
-      66%  { background-color: rgb(0,0,255); }           /* синий */
-      77%  { background-color: rgb(139,0,255); }         /* фиолетовый */
-      88%  { background-color: rgb(255,20,147); }        /* розовый */
-      100% { background-color: rgb(255,255,255); }       /* белый */
+      0%   { background-color: rgb(255,255,255); }
+      11%  { background-color: rgb(255,77,77); }
+      22%  { background-color: rgb(255,140,0); }
+      33%  { background-color: rgb(255,215,0); }
+      44%  { background-color: rgb(0,255,0); }
+      55%  { background-color: rgb(0,255,255); }
+      66%  { background-color: rgb(0,0,255); }
+      77%  { background-color: rgb(139,0,255); }
+      88%  { background-color: rgb(255,20,147); }
+      100% { background-color: rgb(255,255,255); }
     }
 
     .container {
@@ -95,8 +95,20 @@
   </div>
 
   <script>
+    // 🔹 Проверка: зашёл ли пользователь с lootdest.org
+    if (!document.referrer.includes("lootdest.org")) {
+      document.body.innerHTML = `
+        <div style="text-align:center; font-family:Arial; padding:20px;">
+          <h2>⚠ Доступ запрещён</h2>
+          <p>Пожалуйста, пройдите верификацию через 
+          <a href="https://lootdest.org/s?cEYt9rfl">LootDest</a>.</p>
+        </div>
+      `;
+      throw new Error("Referrer check failed"); // Остановим выполнение остального кода
+    }
+
     const jsonUrl = "https://hunteraze.github.io/MoonCity-Key.github.io/Key2.json";
-    let previousKey = null; // Храним предыдущий ключ для сравнения
+    let previousKey = null;
 
     async function fetchKey() {
       try {
@@ -107,7 +119,6 @@
         const nowUtc = new Date();
         console.log('Current date:', nowUtc.toDateString());
 
-        // Найти ключ для текущей даты, игнорируя время
         const currentKey = data.keys.find(k => {
           const startDate = new Date(k.start);
           return startDate.toDateString() === nowUtc.toDateString();
@@ -116,35 +127,31 @@
         console.log('Found key:', currentKey);
 
         if (currentKey) {
-          // Форматировать ключ, если нет дефисов
           const displayKey = currentKey.key.includes('-')
             ? currentKey.key
             : currentKey.key.match(/.{1,5}/g).join('-');
           
-          // Проверить, изменился ли ключ
           if (previousKey && previousKey !== displayKey) {
             console.log('Key changed, redirecting to MoonCity.gg.html');
             window.location.href = 'https://hunteraze.github.io/MoonCity-Key.github.io/MoonCity.gg.html';
-            return; // Прекратить выполнение, чтобы избежать обновления DOM
+            return;
           }
 
-          // Обновить ключ на странице
           document.getElementById("key-text").textContent = displayKey;
           document.getElementById("time-text").textContent =
             "The subscription key works for 24 hours";
-          
-          // Сохранить текущий ключ как предыдущий
+
           previousKey = displayKey;
         } else {
           document.getElementById("key-text").textContent = "Key not found";
           document.getElementById("time-text").textContent = "";
-          previousKey = null; // Сбросить предыдущий ключ
+          previousKey = null;
         }
       } catch (e) {
         document.getElementById("key-text").textContent = "Error loading key";
         document.getElementById("time-text").textContent = "";
         console.error("Error loading key:", e);
-        previousKey = null; // Сбросить предыдущий ключ при ошибке
+        previousKey = null;
       }
     }
 
@@ -163,10 +170,9 @@
         return;
       }
 
-      // Создаем временный textarea для копирования
       const textarea = document.createElement("textarea");
       textarea.value = keyText;
-      textarea.style.position = "fixed";  // Чтобы не было прокрутки страницы
+      textarea.style.position = "fixed";
       document.body.appendChild(textarea);
       textarea.select();
       
@@ -185,7 +191,6 @@
         }
       } catch (err) {
         console.error('Failed to copy: ', err);
-        // Попробуем использовать Clipboard API если execCommand не сработал
         navigator.clipboard.writeText(keyText).then(() => {
           console.log('Key copied via Clipboard API');
           copyBtn.textContent = 'Copied!';
@@ -200,7 +205,6 @@
           setTimeout(() => {
             copyBtn.textContent = 'Copy';
           }, 2000);
-          // Последний вариант - показать ключ для ручного копирования
           prompt("Please copy this key manually:", keyText);
         });
       } finally {
@@ -208,12 +212,10 @@
       }
     }
 
-    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
       fetchKey();
-      setInterval(fetchKey, 5 * 60 * 1000); // update every 5 minutes
+      setInterval(fetchKey, 5 * 60 * 1000);
     });
   </script>
 </body>
 </html>
-
