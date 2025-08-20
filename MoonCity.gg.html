@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GetMoonCity.gg</title>
   <style>
-    /* Кастомный курсор для всех элементов */
+    
     * {
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="rgba(255,192,128,0.8)" stroke-width="2"/></svg>') 12 12, auto !important;
     }
@@ -32,7 +32,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Навигационная панель */
+    
     .navbar {
       position: fixed;
       top: 20px;
@@ -80,7 +80,7 @@
       transition: all 0.4s ease;
     }
 
-    /* Обновлённая анимация для кнопок */
+  
     .main-btn {
       background-color: rgba(25, 25, 25, 0.9);
       color: white;
@@ -142,7 +142,7 @@
       margin-left: 30px;
     }
 
-    /* Новая анимация для бордов */
+   
     .board {
       width: 240px;
       height: 340px;
@@ -195,11 +195,11 @@
       transform: scale(1.1) rotate(5deg);
     }
 
-    /* Раздвигаем фичи (нижние борды) */
+   
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 58px; /* Увеличили расстояние между фичами */
+      gap: 58px; 
       max-width: 1300px;
       margin-bottom: 70px;
       padding: 0 30px;
@@ -257,7 +257,7 @@
       line-height: 1.5;
     }
 
-    /* Анимации плавного появления */
+   
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -275,7 +275,7 @@
     .boards { animation-delay: 0.5s; }
     .features { animation-delay: 0.6s; }
 
-    /* Медиа-запросы */
+   
     @media (max-width: 1100px) {
       .features {
         grid-template-columns: repeat(2, 1fr);
@@ -329,7 +329,7 @@
   </style>
 </head>
 <body>
-  <!-- Навигационная панель -->
+
   <div class="navbar">
     <button class="nav-btn" onclick="window.location.reload()">Home</button>
     <button class="nav-btn" onclick="window.open('https://discord.gg/GagwFFpwva', '_blank')">Discord</button>
@@ -403,39 +403,39 @@
   </div>
 
   <script>
-    // Плавное движение элементов при движении мыши
+  
     const header = document.querySelector('.header');
     const boardsContainer = document.querySelector('.boards');
     const featuresContainer = document.querySelector('.features');
     const credits = document.querySelector('.credits');
 
-    // Функция для плавного движения элементов
+   
     function smoothMove(e) {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
       const mouseX = e.clientX;
       const mouseY = e.clientY;
       
-      // Вычисляем смещение (от -0.5 до 0.5)
+   
       const offsetX = (mouseX / windowWidth - 0.5) * 15;
       const offsetY = (mouseY / windowHeight - 0.5) * 10;
       
-      // Применяем к элементам
+     
       header.style.transform = `translate(${offsetX * 0.3}px, ${offsetY * 0.3}px)`;
       boardsContainer.style.transform = `translate(${offsetX * 0.5}px, ${offsetY * 0.5}px)`;
       featuresContainer.style.transform = `translate(${offsetX * 0.2}px, ${offsetY * 0.2}px)`;
       credits.style.transform = `translate(${offsetX * 0.1}px, ${offsetY * 0.1}px)`;
     }
 
-    // Добавляем плавную анимацию при движении мыши
+  
     let mouseMoveTimer;
     document.addEventListener('mousemove', (e) => {
-      // Ограничиваем частоту обновления для плавности
+     
       clearTimeout(mouseMoveTimer);
       mouseMoveTimer = setTimeout(() => smoothMove(e), 20);
     });
 
-    // Функция для скачивания файла
+   
     function downloadFile() {
       const link = document.createElement("a");
       link.href = "https://github.com/hunteraze/MoonCity_Files/raw/main/MoonCityInstaller.exe";
@@ -447,5 +447,6 @@
   </script>
 </body>
 </html>
+
 
 
