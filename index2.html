@@ -95,7 +95,7 @@
   </div>
 
   <script>
-    // 🔹 Проверка: зашёл ли пользователь с lootdest.org
+    
     if (!document.referrer.includes("lootdest.org")) {
       document.body.innerHTML = `
         <div style="text-align:center; font-family:Arial; padding:20px;">
@@ -104,7 +104,7 @@
           <a href="https://lootdest.org/s?cEYt9rfl">LootDest</a>.</p>
         </div>
       `;
-      throw new Error("Referrer check failed"); // Остановим выполнение остального кода
+      throw new Error("Referrer check failed"); 
     }
 
     const jsonUrl = "https://hunteraze.github.io/MoonCity-Key.github.io/Key2.json";
@@ -219,3 +219,4 @@
   </script>
 </body>
 </html>
+
