@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GetMoonCity.gg</title>
   <style>
-    
     * {
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="rgba(255,192,128,0.8)" stroke-width="2"/></svg>') 12 12, auto !important;
     }
@@ -24,6 +23,32 @@
       font-family: Arial, sans-serif;
       color: white;
       transition: all 0.4s ease;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Звездный фон */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
     }
 
     @keyframes gradient {
@@ -31,8 +56,17 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
     .navbar {
       position: fixed;
       top: 20px;
@@ -69,8 +103,19 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: gradient 15s ease infinite;
+      animation: gradient 15s ease infinite, pulse 2s ease-in-out infinite alternate;
       transition: all 0.4s ease;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    @keyframes pulse {
+      from {
+        text-shadow: 0 0 5px rgba(255, 110, 196, 0.5), 0 0 10px rgba(255, 110, 196, 0.3);
+      }
+      to {
+        text-shadow: 0 0 15px rgba(255, 110, 196, 0.7), 0 0 20px rgba(255, 110, 196, 0.5), 0 0 25px rgba(255, 110, 196, 0.3);
+      }
     }
 
     .buttons {
@@ -78,8 +123,9 @@
       gap: 30px;
       margin: 30px 0;
       transition: all 0.4s ease;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-
   
     .main-btn {
       background-color: rgba(25, 25, 25, 0.9);
@@ -131,9 +177,10 @@
       gap: 80px;
       margin-bottom: 60px;
       transition: all 0.4s ease;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    /* Раздвигаем борды */
     #windows {
       margin-right: 30px;
     }
@@ -141,7 +188,6 @@
     #android {
       margin-left: 30px;
     }
-
    
     .board {
       width: 240px;
@@ -194,7 +240,6 @@
     .board:hover img {
       transform: scale(1.1) rotate(5deg);
     }
-
    
     .features {
       display: grid;
@@ -257,13 +302,97 @@
       line-height: 1.5;
     }
 
+    /* Социальные сети */
+    .social-section {
+      margin: 40px 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .social-title {
+      font-size: 28px;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #43e7e0, #f5a623);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 15s ease infinite;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(25, 25, 25, 0.85);
+      color: white;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 192, 128, 0.2);
+      text-decoration: none;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 0 25px rgba(255, 192, 128, 0.4);
+      background: rgba(255, 192, 128, 0.8);
+      color: black;
+    }
+
+    /* Футер */
+    footer {
+      width: 100%;
+      padding: 30px 0;
+      text-align: center;
+      margin-top: auto;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: rgba(255, 192, 128, 0.9);
+    }
+
+    .copyright {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+    }
    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
-    .navbar, .header, .buttons, .credits, .boards, .features {
+    .navbar, .header, .buttons, .credits, .boards, .features, .social-section {
       animation: fadeIn 0.8s ease-out forwards;
       opacity: 0;
     }
@@ -274,8 +403,9 @@
     .credits { animation-delay: 0.4s; }
     .boards { animation-delay: 0.5s; }
     .features { animation-delay: 0.6s; }
+    .social-section { animation-delay: 0.7s; }
 
-   
+    /* Адаптивность */
     @media (max-width: 1100px) {
       .features {
         grid-template-columns: repeat(2, 1fr);
@@ -289,6 +419,10 @@
       
       .boards {
         gap: 60px;
+      }
+      
+      .header {
+        font-size: 42px;
       }
     }
 
@@ -305,8 +439,6 @@
       
       .header {
         font-size: 36px;
-        text-align: center;
-        padding: 0 20px;
         margin-top: 80px;
       }
       
@@ -325,117 +457,206 @@
         flex-wrap: wrap;
         justify-content: center;
       }
+      
+      .feature {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+        padding: 20px;
+      }
+      
+      .feature img {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        font-size: 28px;
+      }
+      
+      .main-btn {
+        padding: 12px 40px;
+        font-size: 18px;
+      }
+      
+      .board {
+        width: 200px;
+        height: 300px;
+        font-size: 20px;
+      }
+      
+      .feature h2 {
+        font-size: 22px;
+      }
+      
+      .feature p {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Звездный фон -->
+  <div class="stars" id="stars"></div>
 
-  <div class="navbar">
-    <button class="nav-btn" onclick="window.location.reload()">Home</button>
-    <button class="nav-btn" onclick="window.open('https://discord.gg/GagwFFpwva', '_blank')">Discord</button>
-    <button class="nav-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/documentation.html', '_blank')">Documentation</button>
-    <button class="nav-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/report.html', '_blank')">Support</button>
-  </div>
-
-  <div class="header">Let the MoonCity begin, Version: 1.0.4</div>
-
-  <div class="buttons">
-    <button class="main-btn" onclick="downloadFile()">Download</button>
-    <button class="main-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/Key-System.html', '_blank')">Get Key</button>
-  </div>
-
-  <div class="credits">Brought to you by the MoonCity Development Team</div>
-
-  <div class="boards">
-    <div class="board" id="windows">
-      <img src="https://i.postimg.cc/5NSbN8dp/49767.png" alt="Windows">
-      The Windows version is already available!
+  <div class="container">
+    <div class="navbar">
+      <button class="nav-btn" onclick="window.location.reload()">Home</button>
+      <button class="nav-btn" onclick="window.open('https://discord.gg/GagwFFpwva', '_blank')">Discord</button>
+      <button class="nav-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/documentation.html', '_blank')">Documentation</button>
+      <button class="nav-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/report.html', '_blank')">Support</button>
     </div>
-    <div class="board" id="android">
-      <img src="https://i.postimg.cc/JzK076Xn/121145.png" alt="Android">
-      Android soon...
-    </div>
-  </div>
 
-  <div class="features">
-    <div class="feature">
-      <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
-      <div class="feature-content">
-        <h2>Secure</h2>
-        <p>Мы гарантируем, что ваше время использования нашего эксплойта безопасно и незамечено.</p>
+    <div class="header">Let the MoonCity begin, Version: 1.0.4</div>
+
+    <div class="buttons">
+      <button class="main-btn" onclick="downloadFile()">Download</button>
+      <button class="main-btn" onclick="window.open('https://hunteraze.github.io/MoonCity-Key.github.io/Key-System.html', '_blank')">Get Key</button>
+    </div>
+
+    <div class="credits">Brought to you by the MoonCity Development Team</div>
+
+    <div class="boards">
+      <div class="board" id="windows">
+        <img src="https://i.postimg.cc/5NSbN8dp/49767.png" alt="Windows">
+        The Windows version is already available!
+      </div>
+      <div class="board" id="android">
+        <img src="https://i.postimg.cc/JzK076Xn/121145.png" alt="Android">
+        Android soon...
       </div>
     </div>
-    <div class="feature">
-      <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
-      <div class="feature-content">
-        <h2>Unrestricted Execution</h2>
-        <p>Благодаря 97% UNC для премиум-пользователей MoonCity может запускать любой скрипт на рынке, который вы можете ему предложить.</p>
+
+    <div class="features">
+      <div class="feature">
+        <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
+        <div class="feature-content">
+          <h2>Secure</h2>
+          <p>Мы гарантируем, что ваше время использования нашего эксплойта безопасно и незамечено.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
+        <div class="feature-content">
+          <h2>Unrestricted Execution</h2>
+          <p>Благодаря 97% UNC для премиум-пользователей MoonCity может запускать любой скрипт на рынке, который вы можете ему предложить.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
+        <div class="feature-content">
+          <h2>ScriptHub</h2>
+          <p>Интегрированный центр скриптов прямо в пользовательском интерфейсе, так что вам больше не придётся искать скрипты в интернете!</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
+        <div class="feature-content">
+          <h2>Decompiler</h2>
+          <p>MoonCity оснащен современным декомпилятором, способным декомпилировать любой локальный/модульный скрипт, который может вам понадобиться.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
+        <div class="feature-content">
+          <h2>Free</h2>
+          <p>Что самое приятное? MoonCity бесплатна! Нажав на кнопку «Get Key» в верхней части страницы, вы можете получить ключ, который можно использовать в MoonCity.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
+        <div class="feature-content">
+          <h2>UNDETECT</h2>
+          <p>Эксплойт насыщен Undetected, и вы можете играть долгое время, не боясь получить бан.</p>
+        </div>
       </div>
     </div>
-    <div class="feature">
-      <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
-      <div class="feature-content">
-        <h2>ScriptHub</h2>
-        <p>Интегрированный центр скриптов прямо в пользовательском интерфейсе, так что вам больше не придётся искать скрипты в интернете!</p>
+
+    <!-- Социальные сети -->
+    <div class="social-section">
+      <h2 class="social-title">Follow Us</h2>
+      <div class="social-links">
+        <a href="#" class="social-link">D</a>
+        <a href="#" class="social-link">T</a>
+        <a href="#" class="social-link">V</a>
+        <a href="#" class="social-link">Y</a>
+        <a href="#" class="social-link">T</a>
       </div>
     </div>
-    <div class="feature">
-      <img src="https://i.postimg.cc/VvHv7Mfj/key-1.png" alt="Key">
-      <div class="feature-content">
-        <h2>Decompiler</h2>
-        <p>MoonCity оснащен современным декомпилятором, способным декомпилировать любой локальный/модульный скрипт, который может вам понадобиться.</p>
+
+    <!-- Футер -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="#" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">FAQ</a>
+        </div>
+        <div class="copyright">© 2023 MoonCity. All rights reserved.</div>
       </div>
-    </div>
-    <div class="feature">
-      <img src="https://i.postimg.cc/ryhDF61K/idk.png" alt="Key">
-      <div class="feature-content">
-        <h2>Free</h2>
-        <p>Что самое приятное? MoonCity бесплатна! Нажав на кнопку «Get Key» в верхней части страницы, вы можете получить ключ, который можно использовать в MoonCity.</p>
-      </div>
-    </div>
-    <div class="feature">
-      <img src="https://i.postimg.cc/BnFbgXdK/list.png" alt="Key">
-      <div class="feature-content">
-        <h2>UNDETECT</h2>
-        <p>Эксплойт насыщен Undetected, и вы можете играть долгое время, не боясь получить бан.</p>
-      </div>
-    </div>
+    </footer>
   </div>
 
   <script>
+    // Создание звезд
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const starsCount = 100;
+      
+      for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Случайные параметры звезды
+        const size = Math.random() * 3 + 1;
+        const posX = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 10 + 5;
+        const opacity = Math.random() * 0.7 + 0.3;
+        
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${posX}vw`;
+        star.style.top = `${-10}px`;
+        star.style.animationDelay = `${delay}s`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.opacity = opacity;
+        
+        starsContainer.appendChild(star);
+      }
+    }
   
     const header = document.querySelector('.header');
     const boardsContainer = document.querySelector('.boards');
     const featuresContainer = document.querySelector('.features');
     const credits = document.querySelector('.credits');
 
-   
+    // Параллакс эффект
     function smoothMove(e) {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
       const mouseX = e.clientX;
       const mouseY = e.clientY;
       
-   
       const offsetX = (mouseX / windowWidth - 0.5) * 15;
       const offsetY = (mouseY / windowHeight - 0.5) * 10;
       
-     
       header.style.transform = `translate(${offsetX * 0.3}px, ${offsetY * 0.3}px)`;
       boardsContainer.style.transform = `translate(${offsetX * 0.5}px, ${offsetY * 0.5}px)`;
       featuresContainer.style.transform = `translate(${offsetX * 0.2}px, ${offsetY * 0.2}px)`;
       credits.style.transform = `translate(${offsetX * 0.1}px, ${offsetY * 0.1}px)`;
     }
 
-  
     let mouseMoveTimer;
     document.addEventListener('mousemove', (e) => {
-     
       clearTimeout(mouseMoveTimer);
       mouseMoveTimer = setTimeout(() => smoothMove(e), 20);
     });
 
-   
+    // Функция загрузки
     function downloadFile() {
       const link = document.createElement("a");
       link.href = "https://github.com/hunteraze/MoonCity_Files/raw/main/MoonCityInstaller.exe";
@@ -444,10 +665,10 @@
       link.click();
       document.body.removeChild(link);
     }
+
+    // Инициализация звезд при загрузке
+    window.addEventListener('load', createStars);
   </script>
 </body>
 </html>
-
-
-
 
